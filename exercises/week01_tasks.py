@@ -26,8 +26,18 @@ def distance(x1: float, y1: float, x2: float, y2: float) -> float:
 
 
 def parse_point(data: dict[str, object]) -> tuple[float, float]:
-    # TODO(day4): 读取x/y，检查类型；非法输入抛ValueError
-    raise NotImplementedError
+    """检查一个点，返回浮点坐标；非法坐标抛出 ValueError。"""
+    try:
+        x = data["x"]
+        y = data["y"]
+    except KeyError as e:
+        raise ValueError(f"缺少坐标：{e}") from e
+
+    # 精确接受内置 int/float，因此不接受 bool 或数字字符串。
+    if type(x) not in (int, float) or type(y) not in (int, float):
+        raise ValueError("坐标类型不正确：x 和 y 必须是整数或浮点数")
+
+    return float(x), float(y)
 
 
 def calculate_angle(first: tuple[float, float], vertex: tuple[float, float], third: tuple[float, float]) -> float:
