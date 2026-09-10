@@ -41,8 +41,24 @@ def parse_point(data: dict[str, object]) -> tuple[float, float]:
 
 
 def calculate_angle(first: tuple[float, float], vertex: tuple[float, float], third: tuple[float, float]) -> float:
-    # TODO(day5): 用点积公式实现，不调用src里的joint_angle
-    raise NotImplementedError
+    """返回两向量之间的较小夹角（度）；重合端点抛出 ValueError。"""
+    # 保留学习者写法：两个向量同时反向，不改变夹角。
+    x1 = vertex[0] - first[0]
+    y1 = vertex[1] - first[1]
+    x2 = vertex[0] - third[0]
+    y2 = vertex[1] - third[1]
+    uv = x1 * x2 + y1 * y2
+    u = math.sqrt(x1 ** 2 + y1 ** 2)
+    v = math.sqrt(x2 ** 2 + y2 ** 2)
+
+    if u == 0 or v == 0:
+        raise ValueError("顶点与端点重合，无法计算夹角")
+
+    cosine = uv / (u * v)
+    cosine = max(-1.0, min(1.0, cosine))
+    radians = math.acos(cosine)
+    angle = math.degrees(radians)
+    return angle
 
 
 if __name__ == "__main__":
