@@ -71,6 +71,25 @@ def calculate_angle(first: tuple[float, float], vertex: tuple[float, float], thi
     return angle
 
 
+def analyze_angle(data: dict[str, object]) -> dict[str, float]:
+    """D9辅导修正版：分析一组三点，不修改输入，不执行文件读写。"""
+    if not isinstance(data, dict):
+        raise ValueError("输入数据必须是字典")
+
+    try:
+        first = data["first"]
+        vertex = data["vertex"]
+        third = data["third"]
+    except KeyError as e:
+        raise ValueError(f"缺少关节点：{e}") from e
+
+    first1 = parse_point(first)
+    vertex1 = parse_point(vertex)
+    third1 = parse_point(third)
+    result = calculate_angle(first1, vertex1, third1)
+    return {"angle_degrees": result}
+
+
 if __name__ == "__main__":
     # 辅导补充：原题要求的三次调用，预期依次输出 5、-2、5.0。
     print(add(2, 3))
